@@ -1,0 +1,51 @@
+
+#병원
+CREATE (h1:Hospital {
+    name: "서울병원",
+    location: "서울"
+}),
+(h2:Hospital {
+    name: "부산병원",
+    location: "부산"
+}),
+(h3:Hospital {
+    name: "대구병원",
+    location: "대구"
+})
+RETURN h1, h2, h3
+#환자들 생성
+CREATE (p1:Patient {
+    name: "김철수",
+    age: 45,
+    gender: "남성",
+    contact: "010-1234-5678"
+}),
+(p2:Patient {
+    name: "이영희",
+    age: 32,
+    gender: "여성",
+    contact: "010-8765-4321"
+}),
+(p3:Patient {
+    name: "박민수",
+    age: 27,
+    gender: "남성",
+    contact: "010-1122-3344"
+})
+RETURN p1, p2, p3
+
+#환자와 병원 간의 방문 관계 생성
+MATCH (p:Patient {name: "김철수"}), (h:Hospital {name: "서울병원"})
+CREATE (p)-[:VISITED]->(h)
+RETURN p, h
+
+#여러 환자와 병원의 관계 생성
+CREATE (p1:Patient {name: "김철수", age: 45, gender: "남성", contact: "010-1234-5678"}),
+       (p2:Patient {name: "이영희", age: 32, gender: "여성", contact: "010-8765-4321"}),
+       (h1:Hospital {name: "서울병원", location: "서울"}),
+       (h2:Hospital {name: "부산병원", location: "부산"})
+MATCH (p1), (h1), (p2), (h2)
+CREATE (p1)-[:VISITED]->(h1),
+       (p2)-[:VISITED]->(h2)
+RETURN p1, p2, h1, h2
+
